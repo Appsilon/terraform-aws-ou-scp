@@ -271,14 +271,11 @@ data "aws_iam_policy_document" "combined_policy_block" {
       effect = "Deny"
       actions = [
         "ec2:RunInstances",
-        "ec2:CreateVolume",
-        "ec2:DeleteTags",
-        "ec2:CreateSecurityGroup"
+        "ec2:CreateVolume"
       ]
       resources = [
         "arn:aws:ec2:*:*:instance/*",
-        "arn:aws:ec2:*:*:volume/*",
-        "arn:aws:ec2:*:*:security-group/*"
+        "arn:aws:ec2:*:*:volume/*"
       ]
       condition {
         test     = "Null"
