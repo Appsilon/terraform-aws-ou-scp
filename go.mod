@@ -1,6 +1,6 @@
 module template
 
-go 1.16
+go 1.19
 
 require (
 	github.com/agext/levenshtein v1.2.2 // indirect
