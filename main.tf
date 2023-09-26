@@ -284,7 +284,83 @@ data "aws_iam_policy_document" "combined_policy_block" {
       }
     }
   }
+
+  dynamic "statement" {
+    for_each = local.deny_ec2_without_tags_statement
+    content {
+      sid = "DenyEC2CreationSCP1"
+      effect = "Deny"
+      actions = ["ec2:RunInstances"]
+      resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
+      condition {
+        test = "Null"
+        variable = "aws:RequestTag/Budget"
+        values = [true]
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = local.deny_ec2_without_tags_statement
+    content {
+      sid = "DenyEC2CreationSCP2"
+      effect = "Deny"
+      actions = ["ec2:RunInstances"]
+      resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
+      condition {
+        test = "Null"
+        variable = "aws:RequestTag/Team"
+        values = [true]
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = local.deny_ec2_without_tags_statement
+    content {
+      sid = "DenyEC2CreationSCP3"
+      effect = "Deny"
+      actions = ["ec2:RunInstances", "ec2:CreateVolume"]
+      resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
+      condition {
+        test = "Null"
+        variable = "aws:RequestTag/Project"
+        values = [true]
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = local.deny_ec2_without_tags_statement
+    content {
+      sid = "DenyEC2CreationSCP4"
+      effect = "Deny"
+      actions = ["ec2:RunInstances", "ec2:CreateVolume"]
+      resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
+      condition {
+        test = "Null"
+        variable = "aws:RequestTag/Owner"
+        values = [true]
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = local.deny_ec2_without_tags_statement
+    content {
+      sid = "DenyEC2CreationSCP5"
+      effect = "Deny"
+      actions = ["ec2:RunInstances", "ec2:CreateVolume"]
+      resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
+      condition {
+        test = "Null"
+        variable = "aws:RequestTag/OnBehalfOf"
+        values = [true]
+      }
+    }
+  }
 }
+
 
 
 #
