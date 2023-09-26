@@ -288,14 +288,14 @@ data "aws_iam_policy_document" "combined_policy_block" {
   dynamic "statement" {
     for_each = local.deny_ec2_without_tags_statement
     content {
-      sid = "DenyEC2CreationSCP1"
-      effect = "Deny"
-      actions = ["ec2:RunInstances"]
+      sid       = "DenyEC2CreationSCP1"
+      effect    = "Deny"
+      actions   = ["ec2:RunInstances"]
       resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
       condition {
-        test = "Null"
+        test     = "Null"
         variable = "aws:RequestTag/Budget"
-        values = [true]
+        values   = [true]
       }
     }
   }
@@ -303,14 +303,14 @@ data "aws_iam_policy_document" "combined_policy_block" {
   dynamic "statement" {
     for_each = local.deny_ec2_without_tags_statement
     content {
-      sid = "DenyEC2CreationSCP2"
-      effect = "Deny"
-      actions = ["ec2:RunInstances"]
+      sid       = "DenyEC2CreationSCP2"
+      effect    = "Deny"
+      actions   = ["ec2:RunInstances"]
       resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
       condition {
-        test = "Null"
+        test     = "Null"
         variable = "aws:RequestTag/Team"
-        values = [true]
+        values   = [true]
       }
     }
   }
@@ -318,14 +318,14 @@ data "aws_iam_policy_document" "combined_policy_block" {
   dynamic "statement" {
     for_each = local.deny_ec2_without_tags_statement
     content {
-      sid = "DenyEC2CreationSCP3"
-      effect = "Deny"
-      actions = ["ec2:RunInstances", "ec2:CreateVolume"]
+      sid       = "DenyEC2CreationSCP3"
+      effect    = "Deny"
+      actions   = ["ec2:RunInstances", "ec2:CreateVolume"]
       resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
       condition {
-        test = "Null"
+        test     = "Null"
         variable = "aws:RequestTag/Project"
-        values = [true]
+        values   = [true]
       }
     }
   }
@@ -333,14 +333,14 @@ data "aws_iam_policy_document" "combined_policy_block" {
   dynamic "statement" {
     for_each = local.deny_ec2_without_tags_statement
     content {
-      sid = "DenyEC2CreationSCP4"
-      effect = "Deny"
-      actions = ["ec2:RunInstances", "ec2:CreateVolume"]
+      sid       = "DenyEC2CreationSCP4"
+      effect    = "Deny"
+      actions   = ["ec2:RunInstances", "ec2:CreateVolume"]
       resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
       condition {
-        test = "Null"
+        test     = "Null"
         variable = "aws:RequestTag/Owner"
-        values = [true]
+        values   = [true]
       }
     }
   }
@@ -348,14 +348,14 @@ data "aws_iam_policy_document" "combined_policy_block" {
   dynamic "statement" {
     for_each = local.deny_ec2_without_tags_statement
     content {
-      sid = "DenyEC2CreationSCP5"
-      effect = "Deny"
-      actions = ["ec2:RunInstances", "ec2:CreateVolume"]
+      sid       = "DenyEC2CreationSCP5"
+      effect    = "Deny"
+      actions   = ["ec2:RunInstances", "ec2:CreateVolume"]
       resources = ["arn:aws:ec2:*:*:instance/*", "arn:aws:ec2:*:*:volume/*"]
       condition {
-        test = "Null"
+        test     = "Null"
         variable = "aws:RequestTag/OnBehalfOf"
-        values = [true]
+        values   = [true]
       }
     }
   }
@@ -388,3 +388,48 @@ resource "aws_organizations_policy_attachment" "generated" {
   policy_id = aws_organizations_policy.generated.id
   target_id = var.target.id
 }
+
+resource "aws_organizations_policy" "tag_policy_generated" {
+  name        = "EC2CreationEnforceTag"
+  description = "Enforce Tag policy - EC2 resource creation"
+  content     = data.aws_iam_policy_document.example.json
+}
+
+# {
+#   "tags": {
+#     "Project": {
+#       "tag_key": {
+#         "@@assign": "Project"
+#       },
+#       "tag_value": {
+#         "@@assign": [
+#           "CC102",
+#           "CC103",
+#           "CC104"
+#         ]
+#       },
+#       "enforced_for": {
+#         "@@assign": [
+#           "ec2:instance"
+#         ]
+#       }
+#     },
+#     "team": {
+#       "tag_key": {
+#         "@@assign": "Team"
+#       },
+#       "tag_value": {
+#         "@@assign": [
+#           "Team1",
+#           "Team2",
+#           "Team3"
+#         ]
+#       },
+#       "enforced_for": {
+#         "@@assign": [
+#           "ec2:instance"
+#         ]
+#       }
+#     }
+#   }
+# }
